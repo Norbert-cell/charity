@@ -55,6 +55,7 @@ public class LoginController {
             return "authenticated/registry";
         }
         user.setRole(Role.ROLE_USER);
+        user.setAccountNonLocked(true);
         String passw = passwordEncoder.encode(user.getPassword());
         user.setPassword(passw);
         userService.saveUser(user);

@@ -3,6 +3,7 @@ package pl.coderslab.charity.entity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.coderslab.charity.validator.EditUserValidationGroup;
 import pl.coderslab.charity.validator.UniqueEmail;
 
 import javax.persistence.*;
@@ -17,9 +18,9 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotBlank
+    @NotBlank(groups = EditUserValidationGroup.class)
     private String firstName;
-    @NotBlank
+    @NotBlank(groups = EditUserValidationGroup.class)
     private String lastName;
     @UniqueEmail
     @Pattern(regexp = "[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.([a-zA-Z]{2,}){1}")
@@ -30,6 +31,12 @@ public class User implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public boolean accountNonLocked;
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
 
     public String getFullName(){
         return this.firstName + " " + this.lastName;
@@ -107,7 +114,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return accountNonLocked;
     }
 
     @Override

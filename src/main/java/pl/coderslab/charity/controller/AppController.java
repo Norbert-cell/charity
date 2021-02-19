@@ -37,8 +37,7 @@ public class AppController {
 
     @GetMapping("/")
     public String get(Model model, Principal principal){
-        User user = userService.findUserByEmail(principal.getName());
-        model.addAttribute("fullName", user.getFullName());
+        model.addAttribute("fullName", userService.getPrincipalName(principal.getName()));
         model.addAttribute("allBags", donationService.sumAllBags());
         model.addAttribute("allDonation",donationService.sumAllDonation());
         return "app/index";

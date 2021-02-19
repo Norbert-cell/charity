@@ -84,7 +84,7 @@
 
         <ul class="help--slides-items">
             <li>
-            <c:forEach items="${institutions}" var="institution" varStatus="status" >
+            <c:forEach items="${institutions}" var="institution" varStatus="status" end="3">
                 <c:if test="${status.index == 2}">
                 <li>
                 </c:if>

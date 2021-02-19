@@ -38,8 +38,7 @@ public class DonationController {
 
     @ModelAttribute("fullName")
     public String getNickName(Principal principal){
-        User user = userService.findUserByEmail(principal.getName());
-        return user.getFullName();
+        return userService.getPrincipalName(principal.getName());
 
     }
 
