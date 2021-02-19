@@ -35,4 +35,7 @@ public class DonationService {
         donationRepository.save(donation);
     }
 
+    public int sumAllDonationForInputInstitution(long institutionId) {
+       return donationRepository.countAllByInstitution(institutionId);
+    }
 }
