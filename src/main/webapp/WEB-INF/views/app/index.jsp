@@ -13,7 +13,8 @@
     <link rel="stylesheet" href = "<c:url value = "/resources/css/style.css"/>"/>
 </head>
 <body>
-<%@ include file="fragments/indexHeader.jsp" %>
+<%@ include file="appHeader.jsp" %>
+
 <section class="stats">
     <div class="container container--85">
         <div class="stats--item">
@@ -60,7 +61,6 @@
         </div>
     </div>
 
-    <a href="/registry" class="btn btn--large">Załóż konto</a>
 </section>
 
 <section class="about-us">
@@ -68,7 +68,7 @@
         <h2>O nas</h2>
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas vitae animi rem pariatur incidunt libero
             optio esse quisquam illo omnis.</p>
-        <img src="<c:url value="/resources/images/signature.svg"/>" class="about-us--text-signature" alt="Signature"/>
+        <img src="<c:url value="../resources/images/signature.svg"/>" class="about-us--text-signature" alt="Signature"/>
     </div>
     <div class="about-us--image"><img src="<c:url value="/resources/images/about-us.jpg"/>" alt="People in circle"/>
     </div>
@@ -84,16 +84,16 @@
 
         <ul class="help--slides-items">
             <li>
-            <c:forEach items="${institutions}" var="institution" varStatus="status" >
+                <c:forEach items="${institutions}" var="institution" varStatus="status" >
                 <c:if test="${status.index == 2}">
-                <li>
+            <li>
                 </c:if>
-                    <div class="col">
-                        <div class="title">${institution.name}</div>
-                        <div class="subtitle">${institution.description}</div>
-                    </div>
-                    <c:if test="${status.index == 3}">
-        </li>
+                <div class="col">
+                    <div class="title">${institution.name}</div>
+                    <div class="subtitle">${institution.description}</div>
+                </div>
+                <c:if test="${status.index == 3}">
+            </li>
             </c:if>
             </c:forEach>
             </li>
@@ -101,8 +101,8 @@
     </div>
 
 </section>
-<%@ include file="fragments/indexFooter.jsp" %>
+<%@ include file="appFooter.jsp" %>
 
-<script src="<c:url value="resources/js/app.js"/>"></script>
 </body>
+<script src="../js/app.js"/>
 </html>

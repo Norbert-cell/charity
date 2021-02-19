@@ -152,6 +152,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
       // TODO: Validation
 
+
       this.slides.forEach(slide => {
         slide.classList.remove("active");
 
@@ -164,6 +165,82 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$step.parentElement.hidden = this.currentStep >= 5;
 
       // TODO: get data from inputs and show them in summary
+
+      if (true) {
+
+        const summaryQuantityAndCategory = document.getElementById("quantityAndCategory");
+
+        const summaryFoundation = document.getElementById("foundation");
+
+        const summaryStreet = document.getElementById("street");
+
+        const summaryCity = document.getElementById("summaryCity");
+
+        const summaryZipCode = document.getElementById("zip");
+
+        const summaryDate = document.getElementById("date");
+
+        const summaryTime = document.getElementById("time");
+
+        const summaryComment = document.getElementById("comment");
+
+
+        const chooseQuantity = document.getElementById("bags").value;
+
+        const categories = [];
+
+        const chooseCategory = document.querySelectorAll("#category");
+        chooseCategory.forEach(function (element) {
+          if (element.checked) {
+            const text = element.parentElement.querySelector(".description").innerText;
+            categories.push(text);
+          }
+        })
+
+        let institution = null;
+
+        const chooseInstitution = document.querySelectorAll("#institution");
+        chooseInstitution.forEach(function (element) {
+          if (element.checked){
+           const text= element.parentElement.querySelector(".description").innerText;
+           institution = text;
+          }
+
+        })
+
+        const chooseAddress = document.getElementById("address").value;
+
+        const chooseCity = document.getElementById("city").value;
+
+        const choosePostCode = document.getElementById("postcode").value;
+
+        const choosePickUpDate = document.getElementById("pickUpDate").value;
+
+        const choosePickUpTime = document.getElementById("pickUpTime").value;
+
+        const choosePickUpComment = document.getElementById("pickUpComment").value;
+
+
+        summaryQuantityAndCategory.innerText=chooseQuantity +' worki ' + categories;
+
+        summaryFoundation.innerText = institution;
+
+        summaryStreet.innerText = chooseAddress;
+
+        summaryCity.innerText = chooseCity;
+
+        summaryZipCode.innerText = choosePostCode;
+
+        summaryDate.innerText = choosePickUpDate;
+
+        summaryTime.innerText = choosePickUpTime;
+
+        summaryComment.innerText = choosePickUpComment;
+
+      }
+
+
+
     }
 
   }
@@ -171,4 +248,5 @@ document.addEventListener("DOMContentLoaded", function() {
   if (form !== null) {
     new FormSteps(form);
   }
-});
+
+})
