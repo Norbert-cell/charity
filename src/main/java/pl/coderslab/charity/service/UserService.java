@@ -1,6 +1,7 @@
 package pl.coderslab.charity.service;
 
 import org.springframework.stereotype.Service;
+import pl.coderslab.charity.entity.Role;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.repository.UserRepository;
 
@@ -27,5 +28,9 @@ public class UserService {
 
     public User findUserByEmail(String name) {
         return userRepository.findByUsername(name).orElse(new User());
+    }
+
+    public Role checkAuthority(String name) {
+        return userRepository.findByUsername(name).orElse(new User()).getRole();
     }
 }

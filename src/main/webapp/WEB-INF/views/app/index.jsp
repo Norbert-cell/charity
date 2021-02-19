@@ -103,6 +103,6 @@
 </section>
 <%@ include file="appFooter.jsp" %>
 
+<script src="<c:url value="/resources/js/app.js"/>"/>
 </body>
-<script src="../js/app.js"/>
 </html>

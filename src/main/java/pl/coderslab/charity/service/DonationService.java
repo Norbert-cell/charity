@@ -18,7 +18,11 @@ public class DonationService {
     }
 
     public int sumAllBags(){
-        return donationRepository.countAllByQuantity();
+        Object i = donationRepository.countAllByQuantity();
+        if (i instanceof Number){
+           return  ((Number) i).intValue();
+        }
+        return 0;
     }
 
     public int sumAllDonation(){

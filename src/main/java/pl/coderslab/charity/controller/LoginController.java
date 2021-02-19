@@ -31,19 +31,16 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String successLogin(@RequestParam boolean error, Model model){
+    public String successLogin(@RequestParam boolean error, Model model, Principal principal){
         if(error) {
             model.addAttribute("errorMessage", "Nie poprawny email lub haslo.");
             return "authenticated/login";
         }
-        return "redirect:/app";
-    }
-
-    @GetMapping("/app")
-    public String get(Model model, Principal principal){
-        User user = userService.findUserByEmail(principal.getName());
-        model.addAttribute("nickName", user.getNickName());
-    return "app/index";
+        Role role = userService.checkAuthority(principal.getName());
+        if (role.equals(Role.ROLE_ADMIN)){
+            return "redirect:/admin/";
+        }
+        return "redirect:/app/";
     }
 
     @GetMapping("/registry")

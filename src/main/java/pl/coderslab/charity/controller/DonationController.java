@@ -36,10 +36,10 @@ public class DonationController {
         this.userService = userService;
     }
 
-    @ModelAttribute("nickName")
+    @ModelAttribute("fullName")
     public String getNickName(Principal principal){
         User user = userService.findUserByEmail(principal.getName());
-        return user.getNickName();
+        return user.getFullName();
 
     }
 

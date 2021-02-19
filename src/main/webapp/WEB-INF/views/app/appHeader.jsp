@@ -14,7 +14,7 @@
 <header class="header--main-page">
     <nav class="container container--70">
         <ul class="nav--actions">
-            <li class="logged-user">Witaj ${nickName}
+            <li class="logged-user">Witaj ${fullName}
                 <ul class="dropdown">
                     <li><a href="#">Profil</a></li>
                     <li><a href="#">Moje zbiórki</a></li>
