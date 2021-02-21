@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href = "<c:url value = "/resources/css/style.css"/>"/>
 </head>
 
-<header class="header--form-page">
+<header>
     <nav class="container container--70">
         <ul class="nav--actions">
             <li class="logged-user">
@@ -32,34 +32,36 @@
             <li><a href="index.html#contact" class="btn btn--without-border">Kontakt</a></li>
         </ul>
     </nav>
-
-    <div class="slogan container container--90">
-        <div class="slogan--item">
-            <h1>
-                Oddaj rzeczy, których już nie chcesz<br />
-                <span class="uppercase">potrzebującym</span>
-            </h1>
-
-            <div class="slogan--steps">
-                <div class="slogan--steps-title">Wystarczą 4 proste kroki:</div>
-                <ul class="slogan--steps-boxes">
-                    <li>
-                        <div><em>1</em><span>Wybierz rzeczy</span></div>
-                    </li>
-                    <li>
-                        <div><em>2</em><span>Spakuj je w worki</span></div>
-                    </li>
-                    <li>
-                        <div><em>3</em><span>Wybierz fundację</span></div>
-                    </li>
-                    <li>
-                        <div><em>4</em><span>Zamów kuriera</span></div>
-                    </li>
-                </ul>
-            </div>
+</header>
+<section class="stats">
+    <h1><em class="align-content-center">Twoje dane</em></h1>
+    <div class="container container--85">
+        <div class="stats--item">
+            <form:form method="post" action="/app/user/edit" modelAttribute="user">
+                <form:hidden path="id"/>
+                <form:hidden path="accountNonLocked"/>
+                <form:hidden path="password"/>
+                <form:hidden path="role"/>
+                <form:hidden path="username"/>
+                <div class="form-group">
+                    <form:input path="firstName" placeholder="Imie" />
+                    <form:errors path="firstName"/>
+                </div>
+                <div class="form-group">
+                    <form:input path="lastName" placeholder="Nazwisko" />
+                    <form:errors path="lastName"/>
+                </div>
+                <div class="form-group form-group--buttons">
+                    <a href="/app/user/details" class="btn btn--without-border">Wróć</a>
+                    <button class="btn" type="submit">Zatwierdz</button>
+                </div>
+            </form:form>
         </div>
     </div>
-</header>
+</section>
+<%@ include file="../donation/donationFooter.jsp" %>
 
-<script src="../resources/js/app.js"></script>
 
+<script src="../js/app.js"/>
+</body>
+</html>

@@ -5,7 +5,7 @@
         <ul class="nav--actions">
             <li class="logged-user">Witaj ${fullName}
                 <ul class="dropdown">
-                    <li><a href="#">Profil</a></li>
+                    <li><a href="/app/user/details">Profil</a></li>
                     <li><a href="#">Moje zbiórki</a></li>
                     <li><a href="/logout">Wyloguj</a></li>
                 </ul>

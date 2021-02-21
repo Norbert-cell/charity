@@ -13,7 +13,9 @@ import pl.coderslab.charity.service.DonationService;
 import pl.coderslab.charity.service.InstitutionService;
 import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.validator.EditUserValidationGroup;
+import pl.coderslab.charity.validator.RegistryUserValidationGroup;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
@@ -119,10 +121,16 @@ public class AdminController {
     }
 
     @PostMapping("/registry")
-    public String registry(@ModelAttribute @Valid User user, BindingResult result){
-        if (result.hasErrors()){
+    public String registry(@ModelAttribute @Validated(RegistryUserValidationGroup.class) User user, BindingResult result,
+                           HttpServletRequest request, Model model){
+        String password2 = request.getParameter("password2");
+        if (result.hasErrors() && !user.getPassword().equals(password2)){
+            if (!user.getPassword().equals(password2)){
+                model.addAttribute("invalidPassword", "Hasla sie nie zgadzaja!");
+            }
             return "admin/registryAdmin";
         }
+        user.setAccountNonLocked(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(Role.ROLE_ADMIN);
         userService.saveUser(user);

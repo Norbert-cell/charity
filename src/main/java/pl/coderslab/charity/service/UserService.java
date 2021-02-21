@@ -1,8 +1,11 @@
 package pl.coderslab.charity.service;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.coderslab.charity.entity.Role;
+import pl.coderslab.charity.entity.Token;
 import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.repository.TokenRepository;
 import pl.coderslab.charity.repository.UserRepository;
 
 import java.util.List;
@@ -12,9 +15,11 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, TokenRepository tokenRepository) {
         this.userRepository = userRepository;
+        this.tokenRepository = tokenRepository;
     }
 
 
@@ -27,8 +32,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User findUserByEmail(String name) {
-        return userRepository.findByUsername(name).orElse(new User());
+    public Optional<User> findUserByEmail(String name) {
+        return userRepository.findByUsername(name);
     }
 
     public Role checkAuthority(String name) {
@@ -59,6 +64,17 @@ public class UserService {
         }else {
             user.setAccountNonLocked(true);
         }
+        userRepository.save(user);
+    }
+// reset password
+    public void createPasswordResetTokenForUser(User user, String token) {
+        Token myToken = new Token(token, user);
+        tokenRepository.save(myToken);
+    }
+
+    public void updatePassword(String updatedPassword, long id) {
+        User user = userRepository.findById(id).orElse(new User());
+        user.setPassword(updatedPassword);
         userRepository.save(user);
     }
 }

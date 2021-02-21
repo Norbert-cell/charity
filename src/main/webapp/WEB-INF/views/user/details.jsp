@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href = "<c:url value = "/resources/css/style.css"/>"/>
 </head>
 
-<header class="header--form-page">
+<header>
     <nav class="container container--70">
         <ul class="nav--actions">
             <li class="logged-user">
@@ -32,34 +32,29 @@
             <li><a href="index.html#contact" class="btn btn--without-border">Kontakt</a></li>
         </ul>
     </nav>
-
-    <div class="slogan container container--90">
-        <div class="slogan--item">
-            <h1>
-                Oddaj rzeczy, których już nie chcesz<br />
-                <span class="uppercase">potrzebującym</span>
-            </h1>
-
-            <div class="slogan--steps">
-                <div class="slogan--steps-title">Wystarczą 4 proste kroki:</div>
-                <ul class="slogan--steps-boxes">
-                    <li>
-                        <div><em>1</em><span>Wybierz rzeczy</span></div>
-                    </li>
-                    <li>
-                        <div><em>2</em><span>Spakuj je w worki</span></div>
-                    </li>
-                    <li>
-                        <div><em>3</em><span>Wybierz fundację</span></div>
-                    </li>
-                    <li>
-                        <div><em>4</em><span>Zamów kuriera</span></div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
 </header>
+<section class="stats">
+    <h1><em class="align-content-center">Twoje dane</em></h1>
+    <div class="container container--85">
+        <div class="stats--item">
+            <em>Email</em>
 
-<script src="../resources/js/app.js"></script>
+            <h3>Imie i nazwisko</h3>
+            <a href="/app/user/edit" class="btn">Edytuj</a>
+            <a href="/app/user/email" class="btn">Zmien email</a>
+            <a href="/app/user/pass" class="btn">Zmien hasło</a>
+        </div>
 
+        <div class="stats--item">
+            <em>${user.username}</em>
+            <h3>${user.fullName}</h3>
+        </div>
+
+    </div>
+</section>
+<%@ include file="../donation/donationFooter.jsp" %>
+
+
+<script src="../js/app.js"/>
+</body>
+</html>

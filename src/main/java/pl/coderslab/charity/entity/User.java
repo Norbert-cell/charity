@@ -3,10 +3,14 @@ package pl.coderslab.charity.entity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import pl.coderslab.charity.validator.ChangePasswordValidationGroup;
 import pl.coderslab.charity.validator.EditUserValidationGroup;
+import pl.coderslab.charity.validator.RegistryUserValidationGroup;
 import pl.coderslab.charity.validator.UniqueEmail;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
@@ -18,21 +22,29 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @NotBlank(groups = EditUserValidationGroup.class)
+    @NotBlank(groups = {EditUserValidationGroup.class, RegistryUserValidationGroup.class})
     private String firstName;
-    @NotBlank(groups = EditUserValidationGroup.class)
+    @NotBlank(groups = {EditUserValidationGroup.class,RegistryUserValidationGroup.class})
     private String lastName;
-    @UniqueEmail
-    @Pattern(regexp = "[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.([a-zA-Z]{2,}){1}")
-    @NotBlank
+    @UniqueEmail(groups = RegistryUserValidationGroup.class)
+    @Pattern(regexp = "[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.([a-zA-Z]{2,}){1}",groups = RegistryUserValidationGroup.class)
+    @NotBlank(groups = RegistryUserValidationGroup.class)
     private String username;
-
+    @NotBlank(groups = {ChangePasswordValidationGroup.class, RegistryUserValidationGroup.class})
+    @Min(value = 3, groups = {ChangePasswordValidationGroup.class,RegistryUserValidationGroup.class})
+    @Max(value =24, groups = {ChangePasswordValidationGroup.class,RegistryUserValidationGroup.class})
     private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
     public boolean accountNonLocked;
+
+    public boolean enabled;
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public void setAccountNonLocked(boolean accountNonLocked) {
         this.accountNonLocked = accountNonLocked;
@@ -124,7 +136,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Override

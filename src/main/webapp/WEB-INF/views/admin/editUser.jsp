@@ -27,6 +27,7 @@
                     <form:hidden path="username"/>
                     <form:hidden path="password"/>
                     <form:hidden path="role"/>
+                    <form:hidden path="accountNonLocked"/>
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">

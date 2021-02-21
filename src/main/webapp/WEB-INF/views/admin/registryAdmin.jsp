@@ -55,6 +55,13 @@
                                         <form:errors path="password"/>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="small mb-1" for="inputConfirmPassword">Powtórz hasło</label>
+                                        <input class="form-control py-4" name="password2" id="inputConfirmPassword" type="password" placeholder="Powtórz hasło" />
+                                    </div>
+                                    <div style="color:red"><h3>${invalidPassword}</h3></div>
+                                </div>
                             </div>
                             <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block" type="submit">Utwórz konto</button></div>
                         </form:form>

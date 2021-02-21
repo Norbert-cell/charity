@@ -29,21 +29,14 @@
 </header>
 
 <section class="login-page">
-    <h2>Zaloguj się</h2>
-    <form method='post'>
-        <font color="red">${errorMessage}</font>
-        <font color="red">${errorToken}</font>
+    <h2>Podaj meila</h2>
+    <form method='post' action="/forgot">
+        ${errorMessage}
+        ${successMessage}
         <div class="form-group">
             <input type="text" name="username" placeholder="Email" />
         </div>
-        <div class="form-group">
-            <input type="password" name="password" placeholder="Hasło" />
-            <a href="/forgot" class="btn btn--small btn--without-border reset-password">Przypomnij hasło</a>
-        </div>
-
-        <div class="form-group form-group--buttons">
-            <a href="/registry" class="btn btn--without-border">Załóż konto</a>
-            <button class="btn" type="submit">Zaloguj się</button>
+            <button class="btn" type="submit">Wyslij na meila</button>
         </div>
     </form>
 </section>

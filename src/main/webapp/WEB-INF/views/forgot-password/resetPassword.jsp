@@ -29,23 +29,20 @@
 </header>
 
 <section class="login-page">
-    <h2>Zaloguj się</h2>
-    <form method='post'>
-        <font color="red">${errorMessage}</font>
-        <font color="red">${errorToken}</font>
-        <div class="form-group">
-            <input type="text" name="username" placeholder="Email" />
-        </div>
-        <div class="form-group">
-            <input type="password" name="password" placeholder="Hasło" />
-            <a href="/forgot" class="btn btn--small btn--without-border reset-password">Przypomnij hasło</a>
-        </div>
-
-        <div class="form-group form-group--buttons">
-            <a href="/registry" class="btn btn--without-border">Załóż konto</a>
-            <button class="btn" type="submit">Zaloguj się</button>
-        </div>
-    </form>
+    <h2>Reset hasła</h2>
+            <form method='post' action="/reset">
+                ${notMatchPassword}
+                    ${errorToken}
+                    <input type="text" name="token" value="${resetToken}" hidden>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Hasło" min="3" max="24" />
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password2" placeholder="Powtórz hasło" min="3" max="24" />
+                </div>
+                <button class="btn" type="submit">Zatwierdz</button>
+                </div>
+            </form>
 </section>
 
 <%@ include file="../fragments/indexFooter.jsp" %>

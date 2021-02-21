@@ -30,10 +30,11 @@
         </div>
         <div class="form-group">
             <form:password path="password" id="pass" placeholder="Hasło" />
-            <form:errors path="password"/>
+            <h3><form:errors path="password"/></h3>
         </div>
         <div class="form-group">
-            <input id="pass2" type="password" name="password2" placeholder="Powtórz hasło" />
+            <input id="pass2" type="password" name="password2" required placeholder="Powtórz hasło" />
+            <div style="color: red"><h3>${invalidPassword}</h3></div>
         </div>
 
         <div class="form-group form-group--buttons">
@@ -45,12 +46,10 @@
 
 <%@ include file="../fragments/indexFooter.jsp" %>
 <script>function checkPassword() {
-    const pass1 = document.getElementById("#pass");
-    const pass2 = document.getElementById("#pass2")
+    const pass1 = document.getElementById("#pass").value;
+    const pass2 = document.getElementById("#pass2").value;
     if (pass1 !== pass2) {
         alert("Passwords Do not match");
-        document.getElementById("pass").style.borderColor = "#E34234";
-        document.getElementById("rpass").style.borderColor = "#E34234";
     }
 }</script>
 </body>
