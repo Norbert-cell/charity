@@ -9,6 +9,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleContextResolver;
@@ -25,6 +26,7 @@ import java.util.Set;
 @ComponentScan("pl.coderslab")
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = {"pl.coderslab.charity.repository"})
+@EnableScheduling
 public class AppConfig {
 
     @Bean(name="localeResolver")

@@ -3,7 +3,10 @@ package pl.coderslab.charity.controller;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.coderslab.charity.entity.Token;
@@ -11,6 +14,7 @@ import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.repository.TokenRepository;
 import pl.coderslab.charity.service.MailService;
 import pl.coderslab.charity.service.UserService;
+import pl.coderslab.charity.validator.ChangePasswordValidationGroup;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +46,7 @@ public class ForgotPasswordController {
     public String getEmail(HttpServletRequest request, Model model){
         String email = request.getParameter("username");
         Optional<User> optionalUser= userService.findUserByEmail(email);
-        if (!optionalUser.isPresent()){
+        if (optionalUser.isEmpty()){
             model.addAttribute("errorMessage", "Nie znaleziono takiego meila w naszym serwisie!");
         } else {
             User user = optionalUser.get();
@@ -66,39 +70,45 @@ public class ForgotPasswordController {
 
             model.addAttribute("successMessage", "Na meila " + user.getUsername() + " zostal wyslany link do zresetowania hasla" );
         }
-        return "forgot-password/forgotPassword";
+        return "forgot-password/succesSendMail";
     }
 
     @GetMapping("/reset")
     public String resetPassword(@RequestParam("value") String value, Model model){
         Optional<Token> token = tokenRepository.findByValue(value);
 
-        if (token.isPresent()){
-            model.addAttribute("resetToken", token.get().getValue());
-        }else {
+        if (token.isEmpty()){
             model.addAttribute("errorToken", "Token nie istnieje");
+            return "forgot-password/errorToken";
+        }else {
+            Token tkn = token.get();
+            model.addAttribute("resetToken", tkn.getValue());
+            model.addAttribute("user", tkn.getUser());
         }
 
         return "forgot-password/resetPassword";
     }
 
     @PostMapping("/reset")
-    public String resetPass(HttpServletRequest request, Model model){
-        String password = request.getParameter("password");
+    public String resetPass(@ModelAttribute @Validated(ChangePasswordValidationGroup.class) User user,
+                            BindingResult result, HttpServletRequest request, Model model){
+        String resetToken = request.getParameter("resetToken");
+        if (result.hasErrors()){
+            return "redirect:/reset?value="+resetToken;
+        }
+
         String password2 = request.getParameter("password2");
-        String resetToken = request.getParameter("token");
-        if (password.equals(password2)){
-            Optional<Token> optionalToken = tokenRepository.findByValue(resetToken);
+        Optional<Token> optionalToken = tokenRepository.findByValue(resetToken);
+
+        if (user.getPassword().equals(password2)){
             if (optionalToken.isPresent()){
                 Token token = optionalToken.get();
-                User user = token.getUser();
-                user.setPassword(passwordEncoder.encode(password));
-                userService.saveUser(user);
+                userService.updatePassword(passwordEncoder.encode(user.getPassword()), token.getUser());
                 tokenRepository.delete(token);
             }
         } else {
             model.addAttribute("notMatchPassword", "Hasla sie nie zgadzaja!");
-            model.addAttribute("token", resetToken);
+            model.addAttribute("resetToken", resetToken);
             return "forgot-password/resetPassword";
         }
         return "redirect:/login";

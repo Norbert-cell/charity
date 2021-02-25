@@ -2,20 +2,27 @@ package pl.coderslab.charity.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.coderslab.charity.entity.Role;
 import pl.coderslab.charity.entity.Token;
 import pl.coderslab.charity.entity.User;
 import pl.coderslab.charity.repository.TokenRepository;
 import pl.coderslab.charity.repository.UserRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public UserService(UserRepository userRepository, TokenRepository tokenRepository) {
         this.userRepository = userRepository;
@@ -72,9 +79,10 @@ public class UserService {
         tokenRepository.save(myToken);
     }
 
-    public void updatePassword(String updatedPassword, long id) {
-        User user = userRepository.findById(id).orElse(new User());
-        user.setPassword(updatedPassword);
-        userRepository.save(user);
+    public void updatePassword(String updatedPassword, User user) {
+        entityManager.createQuery("update User u set u.password=?1 where u.id=?2")
+                .setParameter(1,updatedPassword)
+                .setParameter(2,user.getId())
+                .executeUpdate();
     }
 }

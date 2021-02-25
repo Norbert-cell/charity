@@ -14,20 +14,21 @@
     <nav class="container container--70">
         <ul class="nav--actions">
             <li class="logged-user">
-                Witaj ${nickName}
+                Witaj ${fullName}
                 <ul class="dropdown">
-                    <li><a href="#">Profil</a></li>
-                    <li><a href="#">Moje zbiórki</a></li>
+                    <li><a href="/app/user/details">Profil</a></li>
+                    <li><a href="/donate/charity">Moje zbiórki</a></li>
                     <li><a href="/logout">Wyloguj</a></li>
                 </ul>
             </li>
         </ul>
 
         <ul>
-            <li><a href="/app" class="btn btn--without-border active">Start</a></li>
+            <li><a href="/app/" class="btn btn--without-border active">Start</a></li>
             <li><a href="index.html#steps" class="btn btn--without-border">O co chodzi?</a></li>
             <li><a href="index.html#about-us" class="btn btn--without-border">O nas</a></li>
             <li><a href="index.html#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
+            <li><a href="/donate/add-gifts" class="btn btn--without-border">Przekaż dary</a></li>
             <li><a href="index.html#contact" class="btn btn--without-border">Kontakt</a></li>
         </ul>
     </nav>

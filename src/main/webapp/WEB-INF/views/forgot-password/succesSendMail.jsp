@@ -29,23 +29,11 @@
 </header>
 
 <section class="login-page">
-    <h2>Reset hasła</h2>
     <div class="stats--item">
-        <em>${notMatchPassword}</em>
-        <em>${errorToken}</em>
+        <em>${errorMessage}</em>
+        <em>${successMessage}</em>
     </div>
-            <form:form modelAttribute="user" method='post' action="/reset">
-                    <input type="text" name="resetToken" value="${resetToken}" hidden>
-                <div class="form-group">
-                    <form:password path="password" placeholder="Hasło"  />
-                    <form:errors path="password"/>
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password2" placeholder="Powtórz hasło" required />
-                </div>
-                <button class="btn" type="submit">Zatwierdz</button>
-                </div>
-            </form:form>
+
 </section>
 
 <%@ include file="../fragments/indexFooter.jsp" %>

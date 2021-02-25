@@ -18,14 +18,14 @@
                 Witaj ${fullName}
                 <ul class="dropdown">
                     <li><a href="/app/user/details">Profil</a></li>
-                    <li><a href="#">Moje zbiórki</a></li>
+                    <li><a href="/donate/charity">Moje zbiórki</a></li>
                     <li><a href="/logout">Wyloguj</a></li>
                 </ul>
             </li>
         </ul>
 
         <ul>
-            <li><a href="/app" class="btn btn--without-border active">Start</a></li>
+            <li><a href="/app/" class="btn btn--without-border active">Start</a></li>
             <li><a href="index.html#steps" class="btn btn--without-border">O co chodzi?</a></li>
             <li><a href="index.html#about-us" class="btn btn--without-border">O nas</a></li>
             <li><a href="index.html#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
@@ -41,7 +41,6 @@
 
             <h3>Imie i nazwisko</h3>
             <a href="/app/user/edit" class="btn">Edytuj</a>
-            <a href="/app/user/email" class="btn">Zmien email</a>
             <a href="/app/user/pass" class="btn">Zmien hasło</a>
         </div>
 

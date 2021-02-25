@@ -1,5 +1,6 @@
 package pl.coderslab.charity.entity;
 
+import org.hibernate.validator.constraints.Range;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -31,8 +32,7 @@ public class User implements UserDetails {
     @NotBlank(groups = RegistryUserValidationGroup.class)
     private String username;
     @NotBlank(groups = {ChangePasswordValidationGroup.class, RegistryUserValidationGroup.class})
-    @Min(value = 3, groups = {ChangePasswordValidationGroup.class,RegistryUserValidationGroup.class})
-    @Max(value =24, groups = {ChangePasswordValidationGroup.class,RegistryUserValidationGroup.class})
+    @Pattern(regexp ="^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",groups ={ChangePasswordValidationGroup.class,RegistryUserValidationGroup.class} )
     private String password;
 
     @Enumerated(EnumType.STRING)

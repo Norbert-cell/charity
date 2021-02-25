@@ -6,8 +6,10 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Donation {
@@ -37,6 +39,37 @@ public class Donation {
     private LocalDate pickUpDate;
     private LocalTime pickUpTime;
     private String pickUpComment;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    @OneToMany(cascade = CascadeType.MERGE)
+    private Set<Archives> archives;
+
+    private LocalDateTime createdDateTime;
+
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public Set<Archives> getArchives() {
+        return archives;
+    }
+
+    public void setArchives(Set<Archives> archives) {
+        this.archives = archives;
+    }
+
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
     public User getUser() {
         return user;

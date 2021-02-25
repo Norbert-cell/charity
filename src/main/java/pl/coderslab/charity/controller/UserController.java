@@ -14,7 +14,9 @@ import pl.coderslab.charity.service.UserService;
 import pl.coderslab.charity.validator.ChangePasswordValidationGroup;
 import pl.coderslab.charity.validator.EditUserValidationGroup;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/app/user")
@@ -56,19 +58,24 @@ public class UserController {
     }
 
     @GetMapping("/pass")
-    public String changePassword(Principal principal, Model model){
+    public String changePassword(Model model, Principal principal) {
         model.addAttribute("user", userService.findUserByEmail(principal.getName()));
     return "user/changePass";
     }
 
     @PostMapping("/pass")
-    public String changePassword(@ModelAttribute @Validated(ChangePasswordValidationGroup.class) User user
-            , BindingResult result){
+    public String changePassword(@ModelAttribute @Validated(ChangePasswordValidationGroup.class) User user,BindingResult result,
+                                 HttpServletRequest request, Model model){
         if (result.hasErrors()){
             return "user/changePass";
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userService.saveUser(user);
-    return "user/succesChangePassword";
+        String password2 = request.getParameter("password2");
+        if (!user.getPassword().equals(password2)){
+            model.addAttribute("errorMessage", "Hasła sie nie zgadzaja!");
+            return "user/changePass";
+        }
+        userService.updatePassword(passwordEncoder.encode(user.getPassword()),user);
+        return "user/succesChangePassword";
     }
+
 }

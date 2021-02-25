@@ -16,7 +16,7 @@ public class Token {
     private String value;
 
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "user_id")
+    @JoinColumn(nullable = false)
     private User user;
     @Column(nullable = false)
     private Date expiryDate;

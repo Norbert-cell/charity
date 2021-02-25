@@ -77,19 +77,23 @@ public class LoginController {
         String passw = passwordEncoder.encode(user.getPassword());
         user.setPassword(passw);
         userService.saveUser(user);
-        sendToken(user);
+        sendToken(user, request);
         return "redirect:/login";
     }
 
-    private void sendToken(User user){
+    private void sendToken(User user, HttpServletRequest request){
         String value = UUID.randomUUID().toString();
         Token token = new Token();
         token.setValue(value);
         token.setUser(user);
-        token.setExpiryDate(30);
+        token.setExpiryDate(24*60*60);
         tokenRepository.save(token);
 
-        String url = " http://localhost:8080/token?value="+value;
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+
+        String url = scheme+"://"+serverName+":" + serverPort + "/token?value="+value;
         String msg = "Link aktywacyjny do naszego portalu! Kliknij w niego ";
 
         try {

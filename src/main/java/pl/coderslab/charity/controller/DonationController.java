@@ -3,22 +3,18 @@ package pl.coderslab.charity.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import pl.coderslab.charity.entity.Category;
-import pl.coderslab.charity.entity.Donation;
-import pl.coderslab.charity.entity.Institution;
-import pl.coderslab.charity.entity.User;
-import pl.coderslab.charity.service.CategoryService;
-import pl.coderslab.charity.service.DonationService;
-import pl.coderslab.charity.service.InstitutionService;
-import pl.coderslab.charity.service.UserService;
+import org.springframework.web.bind.annotation.*;
+import pl.coderslab.charity.entity.*;
+import pl.coderslab.charity.service.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/donate")
@@ -28,12 +24,16 @@ public class DonationController {
     private final CategoryService categoryService;
     private final InstitutionService institutionService;
     private final UserService userService;
+    private final ArchivesService archivesService;
+    private final MailService mailService;
 
-    public DonationController(DonationService donationService, CategoryService categoryService, InstitutionService institutionService, UserService userService) {
+    public DonationController(DonationService donationService, CategoryService categoryService, InstitutionService institutionService, UserService userService, ArchivesService archivesService, MailService mailService) {
         this.donationService = donationService;
         this.categoryService = categoryService;
         this.institutionService = institutionService;
         this.userService = userService;
+        this.archivesService = archivesService;
+        this.mailService = mailService;
     }
 
     @ModelAttribute("fullName")
@@ -53,6 +53,13 @@ public class DonationController {
         return institutionService.findAll();
     }
 
+    @GetMapping("/{institutionId}")
+    public String details(@PathVariable long institutionId, Principal principal, Model model){
+        List<Donation> donations = donationService.findAllMyDonationForInstitutionSortByDate(institutionId, principal.getName());
+        model.addAttribute("donations",donations);
+    return "donation/donationDetails";
+    }
+
     @GetMapping("/add-gifts")
     public String addDonation(Model model){
         model.addAttribute("donation", new Donation());
@@ -64,9 +71,59 @@ public class DonationController {
         if (result.hasErrors()){
             return "donation/addGift";
         }
-        donationService.save(donation, principal.getName());
-    return "donation/successAddDonation";
+        Optional<User> optionalUser = userService.findUserByEmail(principal.getName());
+        if (optionalUser.isPresent()){
+            User user = optionalUser.get();
+
+            Set<Archives> archivesSet = new HashSet<>();
+
+            Archives archives = new Archives();
+            archives.setStatus(Status.PLACED);
+            archives.setLocalDate(LocalDate.now());
+            archives.setLocalTime(LocalTime.now());
+            archivesService.save(archives);
+
+            archivesSet.add(archives);
+
+            donation.setArchives(archivesSet);
+            donation.setCreatedDateTime(LocalDateTime.now());
+            donation.setStatus(Status.PLACED);
+            donationService.save(donation, user);
+
+            sendMail(user, donation);
+
+            return "donation/successAddDonation";
+        }
+        return "donation/addGift";
+
     }
+
+    private void sendMail(User user, Donation donation){
+
+        String subject = "Charity! Własnie dodałes dar!";
+        String text = "Witaj " + user.getFullName() + "! Twoj dar zostal dodany oraz przyjal status utworzony"
+                + "." + "\n";
+        String details = "Szczególy: " + "\n Instytucja: " + donation.getInstitution().getName() + "\n Przedmioty: " +
+                donation.getCategories().stream().map(Category::getName).collect(Collectors.joining(",")) +
+                "\n Ilość worków: " + donation.getQuantity() + "\n Adres: " + donation.getStreet() + " " +donation.getCity() + " " +
+                donation.getZipCode() + "\n Data odbioru: " + donation.getPickUpDate() + " " + donation.getPickUpTime() + "\n Szczegoly dla kierowcy: "
+                + donation.getPickUpComment();
+
+
+        try {
+            mailService.sendMail(user.getUsername(), subject, text + details, false);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @GetMapping("/charity")
+    public String myCharity(Model model, Principal principal){
+        model.addAttribute("institutions", donationService.getInstitutionNameByMyDonation(principal.getName()));
+        return "donation/myDonations";
+    }
+
+
 
 
 }

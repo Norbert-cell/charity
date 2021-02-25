@@ -213,6 +213,6 @@
 <%@ include file="donationFooter.jsp" %>
 
 
-<script src="../js/app.js"/>
+<script type="text/javascript" src="<c:url value="/resources/js/app.js"/>"></script>
 </body>
 </html>
