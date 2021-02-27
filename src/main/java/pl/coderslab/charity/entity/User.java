@@ -28,11 +28,11 @@ public class User implements UserDetails {
     @NotBlank(groups = {EditUserValidationGroup.class,RegistryUserValidationGroup.class})
     private String lastName;
     @UniqueEmail(groups = RegistryUserValidationGroup.class)
-    @Pattern(regexp = "[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.([a-zA-Z]{2,}){1}",groups = RegistryUserValidationGroup.class)
+    @Pattern(regexp = "[_a-zA-Z0-9-]+(\\.[_a-zA-Z0-9-]+)*@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*\\.([a-zA-Z]{2,}){1}",groups = RegistryUserValidationGroup.class, message = "{javax.validation.constraints.Pattern.message.email}")
     @NotBlank(groups = RegistryUserValidationGroup.class)
     private String username;
     @NotBlank(groups = {ChangePasswordValidationGroup.class, RegistryUserValidationGroup.class})
-    @Pattern(regexp ="^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",groups ={ChangePasswordValidationGroup.class,RegistryUserValidationGroup.class} )
+    @Pattern(regexp ="^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",groups ={ChangePasswordValidationGroup.class,RegistryUserValidationGroup.class}, message = "{javax.validation.constraints.Pattern.message.password}")
     private String password;
 
     @Enumerated(EnumType.STRING)

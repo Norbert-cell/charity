@@ -14,15 +14,10 @@
 <%@ include file="../fragments/appHeader.jsp" %>
 
 <section class="stats">
-    <h1><em class="align-content-center">Twoje dane</em></h1>
     <div class="container container--85">
         <div class="stats--item">
-
-            <em><h3>UDALO CI SIE ZMIENIC HASLO!</h3></em>
-            <a href="/app/user/details" class="btn">Wróć</a>
+            <em>${error}</em>
         </div>
-
-
     </div>
 </section>
 <%@ include file="../fragments/appFooter.jsp" %>

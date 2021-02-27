@@ -11,6 +11,7 @@ import pl.coderslab.charity.repository.UserRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,38 +52,34 @@ public class UserService {
         return userRepository.findAllByRole(role);
     }
 
-    public User findById(long userId) {
-        return userRepository.findById(userId).orElse(new User());
+    public Optional<User> findById(long userId) {
+        return userRepository.findById(userId);
     }
 
     public String getPrincipalName(String name) {
         return userRepository.findByUsername(name).orElse(new User()).getFullName();
     }
 
-    public void remove(long userId) {
-        User user = userRepository.findById(userId).orElse(new User());
+    public void remove(User user) {
         userRepository.delete(user);
     }
 
     public void blockUser(long id) {
         User user = userRepository.findById(id).orElse(new User());
-        if (user.isAccountNonLocked()){
+        if (user.isAccountNonLocked()) {
             user.setAccountNonLocked(false);
-        }else {
+        } else {
             user.setAccountNonLocked(true);
         }
         userRepository.save(user);
     }
-// reset password
-    public void createPasswordResetTokenForUser(User user, String token) {
-        Token myToken = new Token(token, user);
-        tokenRepository.save(myToken);
-    }
 
-    public void updatePassword(String updatedPassword, User user) {
-        entityManager.createQuery("update User u set u.password=?1 where u.id=?2")
-                .setParameter(1,updatedPassword)
-                .setParameter(2,user.getId())
+
+
+    public void updatePassword(String updatedPassword, Long userId) {
+        entityManager.createQuery("update User u set u.password=:updatedPassword where u.id=:userId")
+                .setParameter("updatedPassword", updatedPassword)
+                .setParameter("userId", userId)
                 .executeUpdate();
     }
 }

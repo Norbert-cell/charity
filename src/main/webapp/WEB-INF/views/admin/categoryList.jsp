@@ -19,10 +19,12 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="container-fluid">
-            <h1 class="mt-4"><a class="btn btn--without-border active" href="<c:url value="/admin/charity"/>">Wróć</a></h1>
+            <h1 class="mt-4">Kategorie</h1>
+
             <div class="card mb-4">
                 <div class="card-header">
-                    Admin
+                    <i class="fas fa-table mr-1"></i>
+                    <a href="/admin/category/add" class="btn btn--without-border active btn--large">Dodaj kategorie</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -30,21 +32,27 @@
                             <thead>
                             <tr>
                                 <th>Id</th>
-                                <th>Imie</th>
-                                <th>Nazwisko</th>
-                                <th>Email</th>
+                                <th>Nazwa</th>
+                                <th>Widoczność</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tfoot>
                             <tr>
-                                <td>${user.id}</td>
-                                <td>${user.firstName}</td>
-                                <td>${user.lastName}</td>
-                                <td>${user.username}</td>
-                                <td><a class="btn btn--without-border active" style="background-color: #1e7e34" href="<c:url value="/admin/edit/${user.id}"/>">Edytuj</a> </td>
-                                <td><a onclick="return confirm('Jestes pewny ze chcesz usunac ?')" class="btn btn--without-border active" style="background-color: #1e7e34" href="<c:url value="/admin/remove/${user.id}"/>">Usuń</a> </td>
+                                <th>Id</th>
+                                <th>Nazwa</th>
+                                <th>Widoczność</th>
                             </tr>
-
+                            </tfoot>
+                            <tbody>
+                            <c:forEach items="${categories}" var="category" >
+                                <tr>
+                                    <td>${category.id}</td>
+                                    <td>${category.name}</td>
+                                    <td>${category.visible}</td>
+                                    <td><a class="btn--large" href="/admin/category/edit/${category.id}"/>Edytuj</td>
+                                    <td><a class="btn--large" href="/admin/category/remove/${category.id}"/>Usuń</td>
+                                </tr>
+                            </c:forEach>
                             </tbody>
                         </table>
                     </div>

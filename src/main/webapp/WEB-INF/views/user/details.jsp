@@ -9,49 +9,48 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
     <link rel="stylesheet" type="text/css" href = "<c:url value = "/resources/css/style.css"/>"/>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
 </head>
 
-<header>
-    <nav class="container container--70">
-        <ul class="nav--actions">
-            <li class="logged-user">
-                Witaj ${fullName}
-                <ul class="dropdown">
-                    <li><a href="/app/user/details">Profil</a></li>
-                    <li><a href="/donate/charity">Moje zbiórki</a></li>
-                    <li><a href="/logout">Wyloguj</a></li>
-                </ul>
-            </li>
-        </ul>
+<%@ include file="../fragments/appHeader.jsp" %>
 
-        <ul>
-            <li><a href="/app/" class="btn btn--without-border active">Start</a></li>
-            <li><a href="index.html#steps" class="btn btn--without-border">O co chodzi?</a></li>
-            <li><a href="index.html#about-us" class="btn btn--without-border">O nas</a></li>
-            <li><a href="index.html#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
-            <li><a href="index.html#contact" class="btn btn--without-border">Kontakt</a></li>
-        </ul>
-    </nav>
-</header>
-<section class="stats">
-    <h1><em class="align-content-center">Twoje dane</em></h1>
-    <div class="container container--85">
-        <div class="stats--item">
-            <em>Email</em>
+<div class="container bootdey flex-grow-1 container-p-y">
 
-            <h3>Imie i nazwisko</h3>
-            <a href="/app/user/edit" class="btn">Edytuj</a>
-            <a href="/app/user/pass" class="btn">Zmien hasło</a>
+    <div class="media align-items-center py-3 mb-3">
+        <div class="media-body ml-4">
+            <h2 class="font-weight-bold mb-0">${fullName} <span class="text-muted font-weight-normal"></span></h2>
+            <div class="text-muted mb-2">ID: ${user.id}</div>
+            <a href="/app/user/edit" class="btn btn-primary btn-sm">Edytuj</a>&nbsp;
+            <a href="/app/user/pass" class="btn btn-default btn-sm">Zmien haslo</a>&nbsp;
         </div>
-
-        <div class="stats--item">
-            <em>${user.username}</em>
-            <h3>${user.fullName}</h3>
-        </div>
-
     </div>
-</section>
-<%@ include file="../donation/donationFooter.jsp" %>
+
+    <div class="table-bordered">
+        <hr class="border-light m-0 table-bordered">
+        <div class="card-body">
+
+            <table class="table user-view-table m-0">
+                <tbody>
+                <tr>
+                    <td>Email:</td>
+                    <td>${user.username}</td>
+                </tr>
+                <tr>
+                    <td>Imie:</td>
+                    <td>${user.firstName}</td>
+                </tr>
+                <tr>
+                    <td>Nazwisko:</td>
+                    <td>${user.lastName}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<%@ include file="../fragments/appFooter.jsp" %>
 
 
 <script src="../js/app.js"/>

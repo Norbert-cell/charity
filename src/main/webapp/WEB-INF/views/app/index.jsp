@@ -13,7 +13,7 @@
     <link rel="stylesheet" href = "<c:url value = "/resources/css/style.css"/>"/>
 </head>
 <body>
-<%@ include file="appHeader.jsp" %>
+<%@ include file="../fragments/appHeader.jsp" %>
 
 <section class="stats">
     <div class="container container--85">
@@ -101,7 +101,7 @@
     </div>
 
 </section>
-<%@ include file="appFooter.jsp" %>
+<%@ include file="../fragments/appFooter.jsp" %>
 
 <script src="<c:url value="../resources/js/app.js"/>"/>
 </body>

@@ -59,7 +59,8 @@ public class UserController {
 
     @GetMapping("/pass")
     public String changePassword(Model model, Principal principal) {
-        model.addAttribute("user", userService.findUserByEmail(principal.getName()));
+        Optional<User> optionalUser  = userService.findUserByEmail(principal.getName());
+        optionalUser.ifPresent(user -> model.addAttribute("user", user));
     return "user/changePass";
     }
 
@@ -74,7 +75,9 @@ public class UserController {
             model.addAttribute("errorMessage", "Hasła sie nie zgadzaja!");
             return "user/changePass";
         }
-        userService.updatePassword(passwordEncoder.encode(user.getPassword()),user);
+        String encode = passwordEncoder.encode(user.getPassword());
+//        user.setPassword(encode);
+        userService.updatePassword(encode,user.getId());
         return "user/succesChangePassword";
     }
 

@@ -47,6 +47,7 @@
                                 <td>${institution.id}</td>
                                 <td>${institution.name}</td>
                                 <td><a class="btn--large" href="/admin/charity/details/${institution.id}"/>Szczegóły</td>
+                                <td><a class="btn--large" href="/admin/send-charity/${institution.id}"/>Wyślij paczki</td>
                             </tr>
                             </c:forEach>
                             </tbody>

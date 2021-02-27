@@ -56,14 +56,19 @@ public class ForgotPasswordController {
             token.setValue(UUID.randomUUID().toString());
             token.setExpiryDate(30);
 
+            String scheme = request.getScheme();
+            String serverName = request.getServerName();
+            int serverPort = request.getServerPort();
+
+            String url = "<a href=\"" + scheme+"://"+serverName+":" + serverPort + "/reset?value="+token.getValue() + "\">Kliknij</a></h3>";
+
             String subject = "Charity application. Reset hasła.";
-            String text = "Link resetujacy haslo dla " + user.getUsername() + ". Kliknij w niego aby zresetowac haslo! ";
-            String url = " http://localhost:8080/reset?value="+token.getValue();
+            String text = "</h3>Link resetujacy haslo dla " + user.getUsername() + ". Kliknij w niego aby zresetowac haslo!";
 
             tokenRepository.save(token);
 
             try {
-                mailService.sendMail(user.getUsername(),subject,text + url,false);
+                mailService.sendMail(user.getUsername(),subject,text + url,true);
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
@@ -103,7 +108,7 @@ public class ForgotPasswordController {
         if (user.getPassword().equals(password2)){
             if (optionalToken.isPresent()){
                 Token token = optionalToken.get();
-                userService.updatePassword(passwordEncoder.encode(user.getPassword()), token.getUser());
+                userService.updatePassword(passwordEncoder.encode(user.getPassword()), token.getUser().getId());
                 tokenRepository.delete(token);
             }
         } else {

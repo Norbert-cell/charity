@@ -45,7 +45,7 @@ public class DonationController {
 
     @ModelAttribute("categories")
     public List<Category> categories(){
-        return categoryService.getAll();
+        return categoryService.findAllWhereVisibleIsTrue();
     }
 
     @ModelAttribute("institutions")
@@ -53,11 +53,31 @@ public class DonationController {
         return institutionService.findAll();
     }
 
-    @GetMapping("/{institutionId}")
-    public String details(@PathVariable long institutionId, Principal principal, Model model){
-        List<Donation> donations = donationService.findAllMyDonationForInstitutionSortByDate(institutionId, principal.getName());
+    @GetMapping("/")
+    public String details(Principal principal, Model model){
+        List<Donation> donations = donationService.findAllMyDonationForInstitutionSortByDate(principal.getName());
         model.addAttribute("donations",donations);
-    return "donation/donationDetails";
+    return "donation/donationListDetails";
+    }
+
+
+    @GetMapping("/set-status/{donationId}")
+    public String setStatus(@PathVariable long donationId){
+        Optional<Donation> optionalDonation = donationService.findById(donationId);
+        if (optionalDonation.isEmpty()){
+            return "donation/emptyDonation";
+        } else {
+            Donation donation = optionalDonation.get();
+                Archives archives = new Archives();
+                archives.setStatus(Status.RECEIVED);
+                archives.setLocalDate(LocalDate.now());
+                archives.setLocalTime(LocalTime.now());
+
+                donation.getArchives().add(archives);
+                donationService.updateStatus(donation, Status.RECEIVED);
+                archivesService.updateStatus(archives);
+        }
+        return "redirect:/donate/";
     }
 
     @GetMapping("/add-gifts")
@@ -88,7 +108,8 @@ public class DonationController {
             donation.setArchives(archivesSet);
             donation.setCreatedDateTime(LocalDateTime.now());
             donation.setStatus(Status.PLACED);
-            donationService.save(donation, user);
+            donation.setUser(user);
+            donationService.save(donation);
 
             sendMail(user, donation);
 
@@ -116,14 +137,6 @@ public class DonationController {
             e.printStackTrace();
         }
     }
-
-    @GetMapping("/charity")
-    public String myCharity(Model model, Principal principal){
-        model.addAttribute("institutions", donationService.getInstitutionNameByMyDonation(principal.getName()));
-        return "donation/myDonations";
-    }
-
-
 
 
 }

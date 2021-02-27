@@ -11,22 +11,8 @@
     <link rel="stylesheet" href = "<c:url value = "/resources/css/style.css"/>" />
 </head>
 <body>
-<header>
-    <nav class="container container--70">
-        <ul class="nav--actions">
-            <li><a href="/login" class="btn btn--small btn--without-border">Zaloguj</a></li>
-            <li><a href="/registry" class="btn btn--small btn--highlighted">Załóż konto</a></li>
-        </ul>
+<%@ include file="../fragments/indexHeader.jsp" %>
 
-        <ul>
-            <li><a href="/" class="btn btn--without-border active">Start</a></li>
-            <li><a href="#steps" class="btn btn--without-border">O co chodzi?</a></li>
-            <li><a href="#about-us" class="btn btn--without-border">O nas</a></li>
-            <li><a href="#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
-            <li><a href="#contact" class="btn btn--without-border">Kontakt</a></li>
-        </ul>
-    </nav>
-</header>
 
 <section class="login-page">
     <h2>Reset hasła</h2>
@@ -35,6 +21,13 @@
         <em>${errorToken}</em>
     </div>
             <form:form modelAttribute="user" method='post' action="/reset">
+                <form:hidden path="id"/>
+                <form:hidden path="username"/>
+                <form:hidden path="role"/>
+                <form:hidden path="firstName"/>
+                <form:hidden path="lastName"/>
+                <form:hidden path="accountNonLocked"/>
+                <form:hidden path="enabled"/>
                     <input type="text" name="resetToken" value="${resetToken}" hidden>
                 <div class="form-group">
                     <form:password path="password" placeholder="Hasło"  />

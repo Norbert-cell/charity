@@ -220,9 +220,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const choosePickUpComment = document.getElementById("pickUpComment").value;
 
-
-        summaryQuantityAndCategory.innerText=chooseQuantity +' worki ' + categories;
-
+        if (chooseQuantity === 1){
+          summaryQuantityAndCategory.innerText=chooseQuantity +' worek ' + categories;
+        } else if (chooseQuantity >=2 && chooseQuantity <= 4 ){
+          summaryQuantityAndCategory.innerText=chooseQuantity +' worki ' + categories;
+        } else {
+          summaryQuantityAndCategory.innerText=chooseQuantity +' worków ' + categories;
+        }
         summaryFoundation.innerText = institution;
 
         summaryStreet.innerText = chooseAddress;
@@ -249,4 +253,30 @@ document.addEventListener("DOMContentLoaded", function() {
     new FormSteps(form);
   }
 
+  $(document).ready(function() {
+    $('#example').DataTable( {
+    paging:false
+    });
+  } );
 })
+
+$(document).ready(function(){
+  $(window).scroll(function () {
+    if ($(this).scrollTop() > 50) {
+      $('#back-to-top').fadeIn();
+    } else {
+      $('#back-to-top').fadeOut();
+    }
+  });
+  // scroll body to 0px on click
+  $('#back-to-top').click(function () {
+    $('#back-to-top').tooltip('hide');
+    $('body,html').animate({
+      scrollTop: 0
+    }, 800);
+    return false;
+  });
+
+  $('#back-to-top').tooltip('show');
+
+});

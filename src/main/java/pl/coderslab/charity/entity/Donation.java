@@ -17,7 +17,7 @@ public class Donation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Min(1)
+    @Min(value = 1, message = "javax.validation.constraints.Min.message.DonationQuantity")
     private int quantity;
     @ManyToMany
     @Valid
@@ -31,11 +31,11 @@ public class Donation {
     private String street;
     @NotBlank
     private String city;
-    @Pattern(regexp = "^[0-9]{2}-[0-9]{3}$")
+    @Pattern(regexp = "^[0-9]{2}-[0-9]{3}$", message = "javax.validation.constraints.Pattern.message.zipCode")
     @NotBlank
     private String zipCode;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Future
+    @Future(message = "javax.validation.constraints.Future.message.pickUpDate")
     private LocalDate pickUpDate;
     private LocalTime pickUpTime;
     private String pickUpComment;

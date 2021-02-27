@@ -22,7 +22,7 @@
         <div class="card shadow-lg border-0 rounded-lg mt-5">
             <div class="card-header"><h3 class="text-center font-weight-light my-4">Edycja fundacji</h3></div>
             <div class="card-body">
-                <form:form method="post" action="/admin/charity/add" modelAttribute="institution">
+                <form:form method="post" action="/admin/charity/edit" modelAttribute="institution">
                     <form:hidden path="id"/>
                     <div class="form-row">
                         <div class="col-md-6">
@@ -38,7 +38,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group mt-4 mb-0"><button type="submit" class="btn btn-primary btn-block">Utwórz</button></div>
+                    <div class="form-group mt-4 mb-0"><button type="submit" class="btn btn-primary btn-block">Edytuj</button></div>
                 </form:form>
             </div>
         </div>

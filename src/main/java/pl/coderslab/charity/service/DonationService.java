@@ -2,16 +2,17 @@ package pl.coderslab.charity.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.coderslab.charity.entity.Donation;
-import pl.coderslab.charity.entity.Institution;
-import pl.coderslab.charity.entity.Status;
-import pl.coderslab.charity.entity.User;
+import pl.coderslab.charity.entity.*;
 import pl.coderslab.charity.repository.DonationRepository;
 import pl.coderslab.charity.repository.InstitutionRepository;
 import pl.coderslab.charity.repository.UserRepository;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class DonationService {
@@ -38,8 +39,7 @@ public class DonationService {
         return donationRepository.countAll();
     }
 
-    public void save(Donation donation, User user) {
-        donation.setUser(user);
+    public void save(Donation donation) {
         donationRepository.save(donation);
     }
 
@@ -57,25 +57,51 @@ public class DonationService {
         return new HashSet<>();
     }
 
-    public List<Donation> checkIsDateAfterDateNowAndStatusIsPlaced() {
-        return donationRepository.findAllByPickUpDateIsAfterAndPickUpTimeIsAfterAndStatusIs();
+
+    public void updateStatus(Donation donation, Status status) {
+        donation.setStatus(status);
+        donationRepository.save(donation);
     }
 
-    @Transactional
-    public void updateStatus(Long id, Status status) {
-        donationRepository.updateStatus(id, status);
-    }
-
-    public List<Donation> findAllMyDonationForInstitutionSortByDate(long institutionId, String email) {
+    public List<Donation> findAllMyDonationForInstitutionSortByDate(String email) {
         Optional<User> optionalUser = userRepository.findByUsername(email);
-        Optional<Institution> optionalInstitution = institutionRepository.findById(institutionId);
-        if (optionalUser.isPresent() && optionalInstitution.isPresent()){
+        if (optionalUser.isPresent()){
             User user = optionalUser.get();
-            Institution institution = optionalInstitution.get();
-            List<Donation> donationList = donationRepository.findAllByUserAndInstitution(user, institution);
-            donationList.sort(Comparator.comparing(Donation::getPickUpDate));
+            List<Donation> donationList = donationRepository.findAllByUser(user);
+            donationList.sort(Comparator.comparing(Donation::getCreatedDateTime));
             return donationList;
         }
         return new ArrayList<>();
+    }
+
+    public Optional<Donation> findById(long donationId) {
+        return donationRepository.findById(donationId);
+    }
+
+
+    public Map<Integer, Integer> sendAllPackageToInstitutionAndSetStatus(Institution institution, Status status) {
+        List<Donation> allByInstitutionAndStatusIs = donationRepository.findAllByInstitutionAndStatus(institution, status);
+        Archives archives = new Archives();
+        archives.setLocalDate(LocalDate.now());
+        archives.setLocalTime(LocalTime.now());
+        archives.setStatus(Status.DELIVERED);
+
+        int counter = 0;
+        int quantity =0;
+
+        for (Donation donation : allByInstitutionAndStatusIs) {
+            quantity += donation.getQuantity();
+            counter++;
+            donation.setStatus(Status.DELIVERED);
+            donation.getArchives().add(archives);
+            donationRepository.save(donation);
+        }
+        HashMap<Integer, Integer> giftsAndQuantityHashMap = new HashMap<>();
+        giftsAndQuantityHashMap.put(counter,quantity);
+        return giftsAndQuantityHashMap;
+    }
+
+    public int sumAllDonationWhereStatusIs(Status status) {
+        return donationRepository.countAllByStatus(status);
     }
 }

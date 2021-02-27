@@ -11,28 +11,8 @@
     <link rel="stylesheet" type="text/css" href = "<c:url value = "/resources/css/style.css"/>"/>
 </head>
 
-<header>
-    <nav class="container container--70">
-        <ul class="nav--actions">
-            <li class="logged-user">
-                Witaj ${fullName}
-                <ul class="dropdown">
-                    <li><a href="/app/user/details">Profil</a></li>
-                    <li><a href="/donate/charity">Moje zbiórki</a></li>
-                    <li><a href="/logout">Wyloguj</a></li>
-                </ul>
-            </li>
-        </ul>
+<%@ include file="../fragments/appHeader.jsp" %>
 
-        <ul>
-            <li><a href="/app/" class="btn btn--without-border active">Start</a></li>
-            <li><a href="index.html#steps" class="btn btn--without-border">O co chodzi?</a></li>
-            <li><a href="index.html#about-us" class="btn btn--without-border">O nas</a></li>
-            <li><a href="index.html#help" class="btn btn--without-border">Fundacje i organizacje</a></li>
-            <li><a href="index.html#contact" class="btn btn--without-border">Kontakt</a></li>
-        </ul>
-    </nav>
-</header>
 <section class="stats">
     <h1><em class="align-content-center">Twoje dane</em></h1>
     <div class="container container--85">
@@ -60,7 +40,7 @@
         </div>
     </div>
 </section>
-<%@ include file="../donation/donationFooter.jsp" %>
+<%@ include file="../fragments/appFooter.jsp" %>
 
 
 <script src="../js/app.js"/>

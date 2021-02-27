@@ -20,31 +20,19 @@
 <div id="layoutSidenav_content">
     <main>
         <div class="card shadow-lg border-0 rounded-lg mt-5">
-            <div class="card-header"><h3 class="text-center font-weight-light my-4">Edycja</h3></div>
+            <div class="card-header"><h3 class="text-center font-weight-light my-4">Dodawanie kategorii</h3></div>
             <div class="card-body">
-                <form:form method="post" action="/admin/edit" modelAttribute="user">
-                    <form:hidden path="id"/>
-                    <form:hidden path="username"/>
-                    <form:hidden path="password"/>
-                    <form:hidden path="role"/>
-                    <form:hidden path="accountNonLocked"/>
+                <form:form method="post" action="/admin/category/add" modelAttribute="category">
                     <div class="form-row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label class="small mb-1" for="inputFirstName">Imie</label>
-                                <form:input path="firstName" class="form-control py-4" id="inputFirstName" type="text" placeholder="Imie" />
-                                <form:errors path="firstName"/>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="small mb-1" for="inputLastName">Nazwisko</label>
-                                <form:input path="lastName" class="form-control py-4" id="inputLastName" type="text" placeholder="Nazwisko" />
-                                <form:errors path="lastName"/>
+                                <label class="small mb-1" for="inputName">Nazwa kategorii</label>
+                                <form:input path="name" class="form-control py-4" id="inputName" type="text" placeholder="Wpisz nazwe kategorii" />
+                                <form:errors path="name"/><br/>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group mt-4 mb-0"><button type="submit" class="btn btn-primary btn-block">Zmień</button></div>
+                    <div class="form-group mt-4 mb-0"><button type="submit" class="btn btn-primary btn-block">Utwórz</button></div>
                 </form:form>
             </div>
         </div>

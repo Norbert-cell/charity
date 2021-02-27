@@ -67,9 +67,10 @@ public class LoginController {
                            HttpServletRequest request, Model model){
         String password2 = request.getParameter("password2");
         if (result.hasErrors() && !user.getPassword().equals(password2)){
-            if (!user.getPassword().equals(password2)){
-                model.addAttribute("invalidPassword", "Hasla sie nie zgadzaja!");
-            }
+            return "authenticated/registry";
+        }
+        if (!user.getPassword().equals(password2)){
+            model.addAttribute("invalidPassword", "Hasla sie nie zgadzaja!");
             return "authenticated/registry";
         }
         user.setRole(Role.ROLE_USER);
@@ -86,18 +87,18 @@ public class LoginController {
         Token token = new Token();
         token.setValue(value);
         token.setUser(user);
-        token.setExpiryDate(24*60*60);
+        token.setExpiryDate(24*60);
         tokenRepository.save(token);
 
         String scheme = request.getScheme();
         String serverName = request.getServerName();
         int serverPort = request.getServerPort();
 
-        String url = scheme+"://"+serverName+":" + serverPort + "/token?value="+value;
-        String msg = "Link aktywacyjny do naszego portalu! Kliknij w niego ";
+        String url ="<a href=\"" +scheme+"://"+serverName+":"+ serverPort + "/token?value="+value+"\">Kliknij</a></h3>";
+        String msg = "<h3>Link aktywacyjny do naszego portalu! Kliknij w niego ";
 
         try {
-            mailService.sendMail(user.getUsername(),"Link aktywacyjny do portalu CharityDonation",msg + url,false);
+            mailService.sendMail(user.getUsername(),"Link aktywacyjny do portalu CharityDonation",msg + url,true);
         } catch (MessagingException e) {
             e.printStackTrace();
         }

@@ -34,6 +34,11 @@ public class AppController {
         return institutionService.findAll();
     }
 
+    @ModelAttribute("fullName")
+    public String getNickName(Principal principal){
+        return userService.getPrincipalName(principal.getName());
+
+    }
 
     @GetMapping("/")
     public String get(Model model, Principal principal){
@@ -41,5 +46,10 @@ public class AppController {
         model.addAttribute("allBags", donationService.sumAllBags());
         model.addAttribute("allDonation",donationService.sumAllDonation());
         return "app/index";
+    }
+
+    @GetMapping("/institutions")
+    public String ourInstitutions(){
+    return "app/institutions";
     }
 }

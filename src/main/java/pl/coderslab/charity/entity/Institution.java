@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Institution {
@@ -11,7 +13,10 @@ public class Institution {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Size(min = 5, max = 40, message = "{javax.validation.constraints.Size.message.institutionName}")
+    @NotBlank
     private String name;
+    @NotBlank
     private String description;
 
     public long getId() {

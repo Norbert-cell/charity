@@ -28,11 +28,7 @@ public interface DonationRepository extends JpaRepository<Donation, Long> {
 
     List<Donation> findAllByUser(User user);
 
-    @Query(value="select * from donation where pick_up_date <= DATE(now()) and pick_up_time < time(now()) and status='PLACED'", nativeQuery=true)
-    List<Donation> findAllByPickUpDateIsAfterAndPickUpTimeIsAfterAndStatusIs();
+    List<Donation> findAllByInstitutionAndStatus(Institution institution, Status status);
 
-    @Query(value = "update donation set status=?2 where id=?1", nativeQuery=true)
-    void updateStatus(long id,Status status);
-
-    List<Donation> findAllByUserAndInstitution(User user, Institution institution);
+    int countAllByStatus(Status status);
 }
